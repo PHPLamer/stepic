@@ -24,8 +24,9 @@ urlpatterns = [
     url(r'^$', qa_test),
     url(r'^login/$', auth_test),
     url(r'^signup/$', auth_test),
-    url(r'^ask/$', qa_test),
+    url(r'^ask/', qa_test),
     url(r'^popular/$', qa_test),
     url(r'^new/$', qa_test),
     url(r'^question/(?P<question_id>[0-9]+)/$', qa_test),
+
 ]
