@@ -1,0 +1,1 @@
+[{"model": "qa.answer", "pk": 1, "fields": {"text": "This is an answer.", "added_at": "2016-03-15T20:49:01.729Z", "question": 256, "author": 1}}]
