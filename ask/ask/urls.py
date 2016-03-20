@@ -16,7 +16,8 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from qa.views import test as qa_test
-from qa.views import question_list, question_list_pop, question_detail
+from qa.views import question_list, question_list_pop, question_detail,\
+                     ask_form, answer_add
 from auth.views import test as auth_test
 
 
@@ -25,9 +26,10 @@ urlpatterns = [
     url(r'^$', question_list),
     url(r'^login/$', auth_test),
     url(r'^signup/$', auth_test),
-    url(r'^ask/', qa_test),
+    url(r'^ask/', ask_form),
     url(r'^popular/$', question_list_pop),
     url(r'^new/$', qa_test),
+    url(r'^answer/$', answer_add, name='answer_add'),
     url(r'^question/(?P<question_id>[0-9]+)/$', question_detail, name='question_detail'),
 
 ]

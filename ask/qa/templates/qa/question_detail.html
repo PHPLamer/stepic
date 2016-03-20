@@ -11,6 +11,12 @@
 	{% endfor %}
 	</ul>
 </div>
+<hr>
+<form action="/answer/" method="POST">
+	{{ form.as_ul }}
+	{% csrf_token %}
+	<input type="submit"/>
+</form>
 
 {% endblock %}
 

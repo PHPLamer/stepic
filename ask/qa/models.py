@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
+from django.core.urlresolvers import reverse
 
 
 class Question(models.Model):
@@ -15,6 +16,9 @@ class Question(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_url(self):
+        return reverse('question_detail', kwargs={'question_id': self.id})
 
     class Meta(object):
         ordering = ['-added_at']

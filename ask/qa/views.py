@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.paginator import Paginator, InvalidPage
 from .models import Question
+from .forms import AskForm, AnswerForm
 
 
 def test(request, *args, **kwargs):
@@ -29,6 +30,28 @@ def question_list_pop(request):
 
 def question_detail(request, question_id=None):
     question = get_object_or_404(Question, pk=question_id)
+    form = AnswerForm(initial={'question': question.id})
     return render(request, 'qa/question_detail.html',
                   {'question': question,
-                   'answers': question.answer_set.all()})
+                   'answers': question.answer_set.all(),
+                   'form': form})
+
+
+def ask_form(request):
+    if request.method == 'POST':
+        form = AskForm(request.POST)
+        if form.is_valid():
+            question = form.save()
+            url = question.get_url()
+            return HttpResponseRedirect(url)
+    else:
+        form = AskForm()
+    return render(request, 'qa/qa_form.html', {'form': form})
+
+def answer_add(request):
+    if request.method == 'POST':
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            answer= form.save()
+            url = answer.question.get_url()
+            return HttpResponseRedirect(url)
