@@ -1,0 +1,10 @@
+{% extends "index.html" %}
+{% block content %}
+
+<form action="{{request.path}}" method="POST">
+	{{ form.as_ul }}
+	<input type="submit"/>
+	{% csrf_token %}
+</form>
+
+{% endblock %}

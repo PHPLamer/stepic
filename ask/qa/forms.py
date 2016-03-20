@@ -1,5 +1,7 @@
 from django import forms
 from .models import Question, Answer
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 
 
 class AskForm(forms.Form):
@@ -20,6 +22,7 @@ class AskForm(forms.Form):
 
     def save(self):
         question = Question(**self.cleaned_data)
+        question.author = self._user
         question.save()
         return question
 
@@ -44,5 +47,38 @@ class AnswerForm(forms.Form):
 
     def save(self):
         answer = Answer(**self.cleaned_data)
+        answer.author = self._user
         answer.save()
         return answer
+
+
+class SignupForm(forms.Form):
+    username = forms.CharField(max_length=200)
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    def save(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        email = self.cleaned_data.get('email')
+        user = User.objects.create_user(username, email, password)
+        user.save()
+        return user
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=200)
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        self.user = authenticate(username=username, password=password)
+        if self.user is not None:
+            if not self.user.is_active:
+                raise forms.ValidationError('Disabled account')
+        else:
+            raise forms.ValidationError('Invalid login')
+
+    def get_user(self):
+        return self.user

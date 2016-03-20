@@ -17,15 +17,15 @@ from django.conf.urls import url
 from django.contrib import admin
 from qa.views import test as qa_test
 from qa.views import question_list, question_list_pop, question_detail,\
-                     ask_form, answer_add
+                     ask_form, answer_add, signup, user_login
 from auth.views import test as auth_test
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', question_list),
-    url(r'^login/$', auth_test),
-    url(r'^signup/$', auth_test),
+    url(r'^login/$', user_login),
+    url(r'^signup/$', signup),
     url(r'^ask/', ask_form),
     url(r'^popular/$', question_list_pop),
     url(r'^new/$', qa_test),
